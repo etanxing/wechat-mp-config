@@ -77,7 +77,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/api/getconfig', (req, res) => {
-    const ret = sign(ticket, req.params.url)
+    const ret = sign(ticket, req.query.url)
     console.log(ret)
     res.json({
       appId: config.appid,
