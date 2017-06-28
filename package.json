@@ -18,6 +18,8 @@
   "homepage": "https://github.com/etanxing/wechat-mp-config#readme",
   "dependencies": {
     "axios": "^0.16.2",
-    "express": "^4.15.3"
+    "cors": "^2.8.3",
+    "express": "^4.15.3",
+    "jssha": "^1.5.0"
   }
 }

@@ -1,15 +1,24 @@
 const qs = require('qs')
+const cors = require('cors')
 const express = require('express')
 const axios = require('axios')
 const app = express()
+const sign = require('./sign.js')
+
+app.use(cors())
+
+const config = {
+  'appid': 'wx23427b4112bc5836',
+  'secret': 'ccfadcd8cb3bae9da2bdd49ccd29244e'
+}
 
 let accessToken, expiresIn, ticket
 
 const getAccessToken = () => {
   let queryParams = {
     'grant_type': 'client_credential',
-    'appid': 'wx23427b4112bc5836',
-    'secret': 'ccfadcd8cb3bae9da2bdd49ccd29244e'
+    'appid': config.appid,
+    'secret': config.secret
   };
 
   let wxGetAccessTokenBaseUrl = 'https://api.weixin.qq.com/cgi-bin/token?'+qs.stringify(queryParams);
@@ -27,7 +36,6 @@ const getTicket = () => {
 
   return axios.get(wxGetTicketBaseUrl)
 };
-
 
 getAccessToken()
 .then(({data}) => {
@@ -68,10 +76,13 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.get('/getconfig', (req, res) => {
-  if (accessToken) {
-
-  } else {
-
-  }
+app.get('/api/getconfig', (req, res) => {
+    const ret = sign(ticket, 'http://wsau.oss-cn-shanghai.aliyuncs.com')
+    console.log(ret)
+    res.json({
+      appId: config.appid,
+      timestamp: ret.timestamp,
+      nonceStr: ret.nonceStr,
+      signature: ret.signature
+    })
 })
